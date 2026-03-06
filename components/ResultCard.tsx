@@ -43,11 +43,12 @@ export function ResultCard({ result, workingMonths }: Props) {
     businessIncome,
     nenkin, nhi, taxableIncome, incomeTax, residentTax,
     annualShoukibo, annualIdeco, annualNisa,
-    horizonYears, shoukiboFuture, idecoFuture3, idecoFuture5,
+    shoukiboFuture, idecoFuture3, idecoFuture5,
     nisaPrincipal, nisaCapYear, nisaFuture3, nisaFuture5,
     furusatoMax,
     netAnnual, netMonthly, effectiveTaxRate,
     estimatedAnnualPension, pensionYears,
+    pensionReceiveYears, pensionTotalLifetime, lifetimeTotal3, lifetimeTotal5,
   } = result
 
   const totalDeductions = nenkin + nhi + incomeTax + residentTax
@@ -138,6 +139,10 @@ export function ResultCard({ result, workingMonths }: Props) {
             </div>
             <span className="tabular-nums font-semibold text-violet-700 dark:text-violet-300">{formatMan(estimatedAnnualPension)}<span className="text-xs font-normal text-muted-foreground">/年</span></span>
           </div>
+          <div className="flex justify-between items-start text-sm">
+            <span>年金総受取（{pensionReceiveYears}年間）</span>
+            <span className="tabular-nums font-semibold text-violet-700 dark:text-violet-300">{formatMan(pensionTotalLifetime)}</span>
+          </div>
           {(shoukiboFuture > 0 || idecoFuture3 > 0 || nisaFuture3 > 0) && (
             <>
               <Separator />
@@ -201,7 +206,21 @@ export function ResultCard({ result, workingMonths }: Props) {
               </p>
             </>
           )}
-          <p className="text-xs text-muted-foreground pt-2 border-t">年金は令和7年度額・運用年数を加入年数として概算。実際の受取額は加入履歴・物価スライドにより変動します。</p>
+          <Separator />
+          <div className="flex justify-between items-start text-sm font-semibold">
+            <span>生涯受取合計</span>
+            <div className="text-right tabular-nums">
+              <div className="text-violet-700 dark:text-violet-300">
+                {formatMan(lifetimeTotal3)}{(shoukiboFuture > 0 || idecoFuture3 > 0 || nisaFuture3 > 0) && <span className="text-xs font-normal text-muted-foreground ml-1">（年利3%）</span>}
+              </div>
+              {(shoukiboFuture > 0 || idecoFuture3 > 0 || nisaFuture3 > 0) && (
+                <div className="text-xs font-normal text-muted-foreground">
+                  {formatMan(lifetimeTotal5)}<span className="ml-1">（年利5%）</span>
+                </div>
+              )}
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground pt-1 border-t">年金は令和7年度額・運用年数を加入年数として概算。実際の受取額は加入履歴・物価スライドにより変動します。</p>
         </CardContent>
       </Card>
 

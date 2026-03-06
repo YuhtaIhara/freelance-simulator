@@ -43,6 +43,7 @@ export interface SimulatorInput {
   ideco: number              // iDeCo 掛金/年（円）
   nisa: number               // 新NISA 積立投資枠 積立額/年（円）
   horizonYears: number       // 積立年数（将来受取額の計算用）
+  pensionReceiveYears: number // 年金受給期間
   spouseDeduction: boolean   // 配偶者控除（配偶者の年収103万以下）
 }
 
@@ -87,6 +88,10 @@ export interface SimulatorResult {
   // 年金
   estimatedAnnualPension: number // 老齢基礎年金（概算）
   pensionYears: number           // 計算に使った年数
+  pensionReceiveYears: number    // 受給期間
+  pensionTotalLifetime: number   // 年金総受取額
+  lifetimeTotal3: number         // 生涯受取合計（年利3%）
+  lifetimeTotal5: number         // 生涯受取合計（年利5%）
 }
 
 export interface BreakdownItem {
@@ -309,6 +314,10 @@ export function calculate(input: SimulatorInput): SimulatorResult {
   // 年金見込み（horizonYearsを国民年金加入年数として概算）
   const pensionYears = Math.min(horizonYears, 40)
   const estimatedAnnualPension = Math.floor(816_000 * pensionYears / 40)
+  const pensionReceiveYears = Math.max(1, input.pensionReceiveYears)
+  const pensionTotalLifetime = estimatedAnnualPension * pensionReceiveYears
+  const lifetimeTotal3 = pensionTotalLifetime + shoukiboFuture + idecoFuture3 + nisaFuture3
+  const lifetimeTotal5 = pensionTotalLifetime + shoukiboFuture + idecoFuture5 + nisaFuture5
 
   return {
     grossSales,
@@ -341,6 +350,10 @@ export function calculate(input: SimulatorInput): SimulatorResult {
     breakdown,
     estimatedAnnualPension,
     pensionYears,
+    pensionReceiveYears,
+    pensionTotalLifetime,
+    lifetimeTotal3,
+    lifetimeTotal5,
   }
 }
 

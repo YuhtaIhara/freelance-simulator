@@ -295,12 +295,12 @@ export function SimulatorForm({ input, onChange }: Props) {
             </div>
           </div>
 
-          {/* 積立年数（小規模 or iDeCo or NISA が有効な場合のみ表示） */}
+          {/* 運用年数（小規模 or iDeCo or NISA が有効な場合のみ表示） */}
           {(input.shoukibo > 0 || input.ideco > 0 || input.nisa > 0) && (
             <div>
               <div className="flex justify-between items-center mb-2">
                 <Label>
-                  積立年数（将来受取シミュレーション）
+                  運用年数
                   <InfoTip text="現在の掛金を何年間継続するかの想定。将来受取額の目安を計算します。" />
                 </Label>
                 <span className="font-bold tabular-nums">{input.horizonYears} 年</span>
@@ -315,6 +315,25 @@ export function SimulatorForm({ input, onChange }: Props) {
               </div>
             </div>
           )}
+
+          {/* 年金受給期間（常時表示） */}
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <Label>
+                年金受給期間
+                <InfoTip text="65歳から何年間受給するかの想定。年金総受取額の計算に使用します。平均寿命ベースだと20年前後が目安です。" />
+              </Label>
+              <span className="font-bold tabular-nums">{input.pensionReceiveYears} 年</span>
+            </div>
+            <Slider
+              min={10} max={35} step={1}
+              value={[input.pensionReceiveYears]}
+              onValueChange={([v]) => set("pensionReceiveYears", v)}
+            />
+            <div className="flex justify-between text-xs text-muted-foreground mt-1">
+              <span>10年</span><span>35年</span>
+            </div>
+          </div>
 
         </div>
       </section>

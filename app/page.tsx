@@ -19,6 +19,7 @@ const DEFAULT_INPUT: SimulatorInput = {
   ideco: 0,
   nisa: 0,
   horizonYears: 20,
+  pensionReceiveYears: 20,
   spouseDeduction: false,
 }
 
