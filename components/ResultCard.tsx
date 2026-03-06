@@ -43,7 +43,6 @@ export function ResultCard({ result, workingMonths }: Props) {
     businessIncome,
     nenkin, nhi, taxableIncome, incomeTax, residentTax,
     annualShoukibo, annualIdeco, annualNisa,
-    shoukiboEffect, idecoEffect,
     horizonYears, shoukiboFuture, idecoFuture3, idecoFuture5,
     nisaPrincipal, nisaCapYear, nisaFuture3, nisaFuture5,
     furusatoMax,
@@ -124,29 +123,6 @@ export function ResultCard({ result, workingMonths }: Props) {
         </CardContent>
       </Card>
 
-      {/* 節税効果 */}
-      {(shoukiboEffect > 0 || idecoEffect > 0) && (
-        <Card className="border-amber-300 bg-amber-50 dark:bg-amber-950">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base text-amber-700 dark:text-amber-300">節税効果</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0 space-y-1">
-            <p className="text-xs text-muted-foreground mb-2">
-              小規模企業共済・iDeCoを活用した場合の節税額（税負担の軽減分）
-            </p>
-            {shoukiboEffect > 0 && (
-              <div className="flex justify-between text-sm">
-                <span>節税効果（合計）</span>
-                <span className="font-bold text-amber-600 tabular-nums">▼ {formatMan(shoukiboEffect)}/年</span>
-              </div>
-            )}
-            <p className="text-xs text-muted-foreground mt-2">
-              ※掛金は将来受取の積立。手取りには含まれていません。
-            </p>
-          </CardContent>
-        </Card>
-      )}
-
       {/* 将来受取額シミュレーション */}
       <Card className="border-violet-300 bg-violet-50 dark:bg-violet-950">
         <CardHeader className="pb-2">
@@ -166,48 +142,60 @@ export function ResultCard({ result, workingMonths }: Props) {
             <>
               <Separator />
               {shoukiboFuture > 0 && (
-              <div className="flex justify-between items-center text-sm">
-                <span>小規模企業共済</span>
-                <span className="tabular-nums font-semibold text-violet-700 dark:text-violet-300">
-                  {formatMan(shoukiboFuture)}
-                  <span className="text-xs text-muted-foreground ml-1">（積立金相当額）</span>
-                </span>
-              </div>
-            )}
-            {idecoFuture3 > 0 && (
-              <div className="flex justify-between items-start text-sm">
-                <span>iDeCo</span>
+                <div className="flex justify-between items-center text-sm">
+                  <span>小規模企業共済</span>
+                  <span className="tabular-nums font-semibold text-violet-700 dark:text-violet-300">
+                    {formatMan(shoukiboFuture)}
+                    <span className="text-xs text-muted-foreground ml-1">（積立金相当額）</span>
+                  </span>
+                </div>
+              )}
+              {idecoFuture3 > 0 && (
+                <div className="flex justify-between items-start text-sm">
+                  <span>iDeCo</span>
+                  <div className="text-right tabular-nums">
+                    <div className="font-semibold text-violet-700 dark:text-violet-300">
+                      {formatMan(idecoFuture3)}<span className="text-xs text-muted-foreground ml-1">（年利3%）</span>
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {formatMan(idecoFuture5)}<span className="ml-1">（年利5%）</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {nisaFuture3 > 0 && (
+                <div className="flex justify-between items-start text-sm">
+                  <div>
+                    <div>新NISA</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                      元本 {formatMan(nisaPrincipal)}
+                      {nisaCapYear !== null && (
+                        <span className="ml-1 text-amber-600">（{nisaCapYear}年目に1,800万到達）</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-right tabular-nums">
+                    <div className="font-semibold text-violet-700 dark:text-violet-300">
+                      {formatMan(nisaFuture3)}<span className="text-xs text-muted-foreground ml-1">（年利3%）</span>
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {formatMan(nisaFuture5)}<span className="ml-1">（年利5%）</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <Separator className="my-1" />
+              <div className="flex justify-between items-start text-sm font-semibold">
+                <span>積立合計</span>
                 <div className="text-right tabular-nums">
-                  <div className="font-semibold text-violet-700 dark:text-violet-300">
-                    {formatMan(idecoFuture3)}<span className="text-xs text-muted-foreground ml-1">（年利3%）</span>
+                  <div className="text-violet-700 dark:text-violet-300">
+                    {formatMan(shoukiboFuture + idecoFuture3 + nisaFuture3)}<span className="text-xs font-normal text-muted-foreground ml-1">（年利3%）</span>
                   </div>
-                  <div className="text-xs text-muted-foreground">
-                    {formatMan(idecoFuture5)}<span className="ml-1">（年利5%）</span>
-                  </div>
-                </div>
-              </div>
-            )}
-            {nisaFuture3 > 0 && (
-              <div className="flex justify-between items-start text-sm">
-                <div>
-                  <div>新NISA</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">
-                    元本 {formatMan(nisaPrincipal)}
-                    {nisaCapYear !== null && (
-                      <span className="ml-1 text-amber-600">（{nisaCapYear}年目に1,800万到達）</span>
-                    )}
-                  </div>
-                </div>
-                <div className="text-right tabular-nums">
-                  <div className="font-semibold text-violet-700 dark:text-violet-300">
-                    {formatMan(nisaFuture3)}<span className="text-xs text-muted-foreground ml-1">（年利3%）</span>
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {formatMan(nisaFuture5)}<span className="ml-1">（年利5%）</span>
+                  <div className="text-xs font-normal text-muted-foreground">
+                    {formatMan(shoukiboFuture + idecoFuture5 + nisaFuture5)}<span className="ml-1">（年利5%）</span>
                   </div>
                 </div>
               </div>
-            )}
               <p className="text-xs text-muted-foreground pt-1 border-t">
                 ※小規模は積立元本のみ。iDeCo・新NISAは想定利回り。実際の運用益は変動します。
               </p>

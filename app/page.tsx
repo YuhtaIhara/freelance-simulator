@@ -32,7 +32,7 @@ export default function Home() {
       <header className="border-b bg-background/95 backdrop-blur sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <div>
-            <h1 className="text-base font-bold">フリーランス手取りシミュレーター</h1>
+            <h1 className="text-base font-bold">フリーランスシミュレーター</h1>
             <p className="text-xs text-muted-foreground">令和7年度（2025年度）版 · 個人事業主向け</p>
           </div>
         </div>
@@ -59,7 +59,7 @@ export default function Home() {
       </main>
 
       <footer className="text-center text-xs text-muted-foreground py-6 border-t mt-8">
-        <p>© 2025 フリーランス手取りシミュレーター · 計算結果はあくまで概算です</p>
+        <p>© 2025 フリーランスシミュレーター · 計算結果はあくまで概算です</p>
       </footer>
     </div>
   )
