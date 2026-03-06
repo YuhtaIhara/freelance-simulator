@@ -84,6 +84,9 @@ export interface SimulatorResult {
   effectiveTaxRate: number     // 実効負担率（税+保険/売上）
   // 内訳表示用
   breakdown: BreakdownItem[]
+  // 年金
+  estimatedAnnualPension: number // 老齢基礎年金（概算）
+  pensionYears: number           // 計算に使った年数
 }
 
 export interface BreakdownItem {
@@ -303,6 +306,10 @@ export function calculate(input: SimulatorInput): SimulatorResult {
     ? Math.floor(residentTaxShotoku * 0.2 / furusatoDenominator) + 2_000
     : 0
 
+  // 年金見込み（horizonYearsを国民年金加入年数として概算）
+  const pensionYears = Math.min(horizonYears, 40)
+  const estimatedAnnualPension = Math.floor(816_000 * pensionYears / 40)
+
   return {
     grossSales,
     consumptionTaxReceived: ct.received,
@@ -332,6 +339,8 @@ export function calculate(input: SimulatorInput): SimulatorResult {
     netMonthly,
     effectiveTaxRate,
     breakdown,
+    estimatedAnnualPension,
+    pensionYears,
   }
 }
 

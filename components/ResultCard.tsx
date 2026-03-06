@@ -48,6 +48,7 @@ export function ResultCard({ result, workingMonths }: Props) {
     nisaPrincipal, nisaCapYear, nisaFuture3, nisaFuture5,
     furusatoMax,
     netAnnual, netMonthly, effectiveTaxRate,
+    estimatedAnnualPension, pensionYears,
   } = result
 
   const totalDeductions = nenkin + nhi + incomeTax + residentTax
@@ -147,15 +148,24 @@ export function ResultCard({ result, workingMonths }: Props) {
       )}
 
       {/* 将来受取額シミュレーション */}
-      {(shoukiboFuture > 0 || idecoFuture3 > 0 || nisaFuture3 > 0) && (
-        <Card className="border-violet-300 bg-violet-50 dark:bg-violet-950">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base text-violet-700 dark:text-violet-300">
-              将来受取額（{horizonYears}年後・目安）
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0 space-y-2">
-            {shoukiboFuture > 0 && (
+      <Card className="border-violet-300 bg-violet-50 dark:bg-violet-950">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base text-violet-700 dark:text-violet-300">
+            将来受取額（年金・積立）
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="pt-0 space-y-2">
+          <div className="flex justify-between items-start text-sm">
+            <div>
+              <span>老齢基礎年金（国民年金）</span>
+              <div className="text-xs text-muted-foreground mt-0.5">{pensionYears}年加入ベースの概算・月額 {formatMan(Math.round(estimatedAnnualPension / 12))}</div>
+            </div>
+            <span className="tabular-nums font-semibold text-violet-700 dark:text-violet-300">{formatMan(estimatedAnnualPension)}<span className="text-xs font-normal text-muted-foreground">/年</span></span>
+          </div>
+          {(shoukiboFuture > 0 || idecoFuture3 > 0 || nisaFuture3 > 0) && (
+            <>
+              <Separator />
+              {shoukiboFuture > 0 && (
               <div className="flex justify-between items-center text-sm">
                 <span>小規模企業共済</span>
                 <span className="tabular-nums font-semibold text-violet-700 dark:text-violet-300">
@@ -198,12 +208,14 @@ export function ResultCard({ result, workingMonths }: Props) {
                 </div>
               </div>
             )}
-            <p className="text-xs text-muted-foreground pt-1 border-t">
-              ※小規模は積立元本のみ。iDeCo・新NISAは想定利回り。実際の運用益は変動します。
-            </p>
-          </CardContent>
-        </Card>
-      )}
+              <p className="text-xs text-muted-foreground pt-1 border-t">
+                ※小規模は積立元本のみ。iDeCo・新NISAは想定利回り。実際の運用益は変動します。
+              </p>
+            </>
+          )}
+          <p className="text-xs text-muted-foreground pt-2 border-t">年金は令和7年度額・運用年数を加入年数として概算。実際の受取額は加入履歴・物価スライドにより変動します。</p>
+        </CardContent>
+      </Card>
 
       {/* ふるさと納税 目安 */}
       {furusatoMax > 2_000 && (
