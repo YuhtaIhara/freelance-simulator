@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* ヘッダー */}
-      <header className="border-b bg-background/95 backdrop-blur sticky top-0 z-10">
+      <header className="border-b bg-background/95 backdrop-blur sticky top-0 z-10 print:static print:backdrop-blur-none">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <div>
             <h1 className="text-base font-bold">フリーランスシミュレーター</h1>
@@ -41,9 +41,9 @@ export default function Home() {
 
       {/* メインコンテンツ */}
       <main className="max-w-5xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6 print:grid-cols-1">
           {/* 左: 入力フォーム */}
-          <div>
+          <div className="print:hidden">
             <div className="bg-card border rounded-lg p-5">
               <SimulatorForm input={input} onChange={setInput} />
             </div>
@@ -51,6 +51,14 @@ export default function Home() {
 
           {/* 右: 結果 */}
           <div>
+            <div className="print:hidden mb-3 flex justify-end">
+              <button
+                onClick={() => window.print()}
+                className="inline-flex items-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-xs font-medium shadow-sm hover:bg-accent transition-colors"
+              >
+                PDFで保存
+              </button>
+            </div>
             <ResultCard
               result={result}
               workingMonths={input.workingMonths}
@@ -59,7 +67,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="text-center text-xs text-muted-foreground py-6 border-t mt-8">
+      <footer className="text-center text-xs text-muted-foreground py-6 border-t mt-8 print:hidden">
         <p>© 2025 フリーランスシミュレーター · 計算結果はあくまで概算です</p>
       </footer>
     </div>
